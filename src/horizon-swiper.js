@@ -369,7 +369,7 @@
       var width = $(that.$items[id]).outerWidth(true);
       console.log(width * id);
       var state = "";
-      if (id === that.$items.length) {
+      if (id === (that.$items.length - 1)) {
         state = 'end';
       } else if (id === 0) {
         state = 'start';
