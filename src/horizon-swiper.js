@@ -338,7 +338,7 @@
     Plugin.prototype._scrollToId = function (id) {
       var that = this;
       var offset = that._getOffsetById(id);
-      console.log(offset);
+
       that.isAnimate = true;
 
       if (offset === 'end' || offset === 'start') {
@@ -367,7 +367,7 @@
     Plugin.prototype._getOffsetById = function (id) {
       var that = this;
       var width = $(that.$items[id]).outerWidth(true);
-      console.log(width * id);
+
       var state = "";
       if (id === (that.$items.length - 1)) {
         state = 'end';
