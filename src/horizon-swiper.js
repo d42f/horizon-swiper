@@ -143,16 +143,16 @@
         var $item = $(that.$items[i]);
         var height = $item.outerHeight(true);
         var width = $item.outerWidth(true);
-
+/*
         if (height > that.maxHeight) {
           that.maxHeight = height;
         }
-
+*/
         that.innerContainerWidth += width;
       }
 
       that.viewportSize = that.$inner.width();
-      that.$outer.css({ 'max-height': that.maxHeight + 'px' });
+      //that.$outer.css({ 'max-height': that.maxHeight + 'px' });
 
       if (that.viewportSize < that.innerContainerWidth) {
         that.$element.addClass(defaults.initializedClass);
@@ -320,8 +320,62 @@
             that._scrollTo('next');
           }
         });
+
+        // External custom events
+        that.$element.on('slideToId', function (e, id) {
+            that._scrollToId(id);
+        });
+
       }
     };
+
+    /**
+     *  Scroll to the previous or next item
+     *
+     * @param direction
+     * @private
+     */
+    Plugin.prototype._scrollToId = function (id) {
+      var that = this;
+      var offset = that._getOffsetById(id);
+
+      that.isAnimate = true;
+
+      if (offset === 'end' || offset === 'start') {
+        that.isAnimate = false;
+        return;
+      }
+
+      that.settings.onSlideStart();
+
+      that.$inner.animate({
+        scrollLeft: offset[0]
+      }, that.settings.animationSpeed, function () {
+        if (offset[1] === 'end') {
+          that.settings.onEnd();
+        } else if (offset[1] === 'start') {
+          that.settings.onStart();
+        }
+
+        that._checkPosition();
+        that.settings.onSlideEnd();
+        that.isAnimate = false;
+
+      });
+    };
+
+    Plugin.prototype._getOffsetById = function (id) {
+      var that = this;
+      var width = $(that.$items[id]).outerWidth(true);
+
+      var state = "";
+      if (id === (that.$items.length - 1)) {
+        state = 'end';
+      } else if (id === 0) {
+        state = 'start';
+      }
+      return [width * id , state];
+    }
 
     /**
      *  Scroll to the previous or next item

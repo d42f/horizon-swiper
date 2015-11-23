@@ -1,0 +1,7 @@
+{
+  "name": "horizon-swiper",
+  "version": "1.0.0",
+  "dependencies": {
+    "jquery": "~1.11.0"
+  }
+}
